@@ -345,24 +345,57 @@ contract Ownable is Context {
 }
 
 contract GETAToken is Context, IBEP20, Ownable {
-  using SafeMath for uint256;
+    using SafeMath for uint256;
 
-  mapping (address => uint256) private _balances;
+    mapping (address => uint256) private _balances;
 
-  mapping (address => mapping (address => uint256)) private _allowances;
+    mapping (address => mapping (address => uint256)) private _allowances;
 
-  uint256 private _totalSupply;
-  string public _symbol;
-  string public _name;
-  uint8 public _decimals = 18;  //小数位数
+    uint256 private _totalSupply;
+    string public _symbol;
+    string public _name;
+    uint8 public _decimals = 18;  //小数位数
+
+    uint256 private seedWheelProportion = 50; // 种子轮占比分子
+    uint256 private mechanismProportion = 100; // 机构轮占比分子
+    uint256 private idoProportion = 15; // IDO占比分子
+    uint256 private teamProportion = 100; // 团队占比分子
+    uint256 private ecologyProportion = 105; // 生态贡献者占比分子
+    uint256 private daoProportion = 80; // dao占比分子
+    uint256 private rewardProportion = 550; // 挖矿奖励占比分子
+
+    uint256 private _denominator = 1000; // 手续费分母
+
+
+
+    address private seedWheelAddress = 0x5CDA831d54137D4D255A24953DF72211BE348083;   // 种子轮地址
+    address private mechanismAddress = 0x5E918143C86884ef35ED3436eF1b0900792b4bC3; //机构轮地址
+    address private idoAddress = 0x07c1dd02e47f67603DD0E528f2B3b288FCE578C7; // IDO地址
+    address private teamAddress = 0x022c1E1313FB88D885Fa54e22E4e402655e2BD77; // 团队地址
+    address private ecologyAddress = 0x7264dA29FD3EB953aae2dd2aD7ff1C27df912Ae3; //生态贡献者
+    address private daoAddress = 0xb106Fd1f578E5B60c9C4e8Fc8457c65bA2EA8596;  // dao地址
+    address private rewardAddress = 0x8dD3854f366d4871e1beC28F526871d546E9A083; //奖励地址
 
   constructor() public {
     _name = "GETA TOKEN";
     _symbol = "GETA";
-    _totalSupply = 30000000e18;
-    _balances[msg.sender] = _totalSupply;
+    _totalSupply = 5000000000e18;
 
-    emit Transfer(address(0), msg.sender, _totalSupply);
+    _balances[seedWheelAddress] = _totalSupply.mul(seedWheelProportion).div(_denominator);
+    _balances[mechanismAddress] = _totalSupply.mul(mechanismProportion).div(_denominator);
+    _balances[idoAddress] = _totalSupply.mul(idoProportion).div(_denominator);
+    _balances[teamAddress] = _totalSupply.mul(teamProportion).div(_denominator);
+    _balances[ecologyAddress] = _totalSupply.mul(ecologyProportion).div(_denominator);
+    _balances[daoAddress] = _totalSupply.mul(daoProportion).div(_denominator);
+    _balances[rewardAddress] = _totalSupply.mul(rewardProportion).div(_denominator);
+
+    emit Transfer(address(0), seedWheelAddress, _totalSupply.mul(seedWheelProportion).div(_denominator));
+    emit Transfer(address(0), mechanismAddress, _totalSupply.mul(mechanismProportion).div(_denominator));
+    emit Transfer(address(0), idoAddress, _totalSupply.mul(idoProportion).div(_denominator));
+    emit Transfer(address(0), teamAddress, _totalSupply.mul(teamProportion).div(_denominator));
+    emit Transfer(address(0), ecologyAddress, _totalSupply.mul(ecologyProportion).div(_denominator));
+    emit Transfer(address(0), daoAddress, _totalSupply.mul(daoProportion).div(_denominator));
+    emit Transfer(address(0), rewardAddress, _totalSupply.mul(rewardProportion).div(_denominator));
   }
 
   /**
