@@ -364,7 +364,7 @@ contract GETAToken is Context, IBEP20, Ownable {
     uint256 private daoProportion = 80; // dao占比分子
     uint256 private rewardProportion = 550; // 挖矿奖励占比分子
 
-    uint256 private _denominator = 1000; // 手续费分母
+    uint256 private _denominator = 1000; // 分母
 
 
 
